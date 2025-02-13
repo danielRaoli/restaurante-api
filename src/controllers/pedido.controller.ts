@@ -38,7 +38,7 @@ export const atualizarPedido = async (
 
   try {
     const pedido = await prisma.pedido.update({
-      where: { id: String(id) },
+      where: { id: Number(id) },
       data: {
         mesaId,
         status,
@@ -81,7 +81,7 @@ export const recuperarPedidoPorId = async (req: Request, res: Response, prisma: 
     try {
       const { id } = req.params;
       const pedido = await prisma.pedido.findUnique({
-        where: { id: String(id) },
+        where: { id: Number(id) },
         include: { produtos: true },
       });
   
@@ -103,7 +103,7 @@ export const deletarPedido = async (
   const { id } = req.params;
   try {
     const pedido = await prisma.pedido.delete({
-      where: { id: String(id) },
+      where: { id: Number(id) },
     });
 
     res.status(200).json(pedido);
