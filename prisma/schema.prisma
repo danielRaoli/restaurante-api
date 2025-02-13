@@ -1,0 +1,49 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model Categoria {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    nome     String
+    produtos Produto[]
+}
+
+model Produto {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    nome        String
+    preco       Float
+    categoria   Categoria @relation(fields: [categoriaId], references: [id])
+    categoriaId String    @db.ObjectId
+
+    pedidoProdutos PedidoProduto[] // 🔥 Relação inversa adicionada
+}
+
+model Pedido {
+    id       String          @id @default(auto()) @map("_id") @db.ObjectId
+    mesaId   String          @db.ObjectId
+    produtos PedidoProduto[]
+    status   String
+
+    mesa Mesa @relation(fields: [mesaId], references: [id]) 
+}
+
+model PedidoProduto {
+    id         String  @id @default(auto()) @map("_id") @db.ObjectId
+    pedidoId   String  @db.ObjectId
+    produtoId  String  @db.ObjectId
+    quantidade Int
+    produto    Produto @relation(fields: [produtoId], references: [id])
+
+    pedido     Pedido  @relation(fields: [pedidoId], references: [id])
+}
+
+model Mesa {
+    id      String   @id @default(auto()) @map("_id") @db.ObjectId
+    numero  Int
+    pedidos Pedido[]
+}
