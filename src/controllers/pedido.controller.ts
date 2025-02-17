@@ -21,6 +21,7 @@ export const criarPedido = async (
           ),
         },
       },
+      include: { produtos: true },
     });
     res.status(201).json(pedido);
   } catch (error) {
@@ -77,23 +78,27 @@ export const recuperarPedidos = async (
   }
 };
 
-export const recuperarPedidoPorId = async (req: Request, res: Response, prisma: PrismaClient) => {
-    try {
-      const { id } = req.params;
-      const pedido = await prisma.pedido.findUnique({
-        where: { id: Number(id) },
-        include: { produtos: true },
-      });
-  
-      if (!pedido) {
-        return res.status(404).json({ error: "Pedido não encontrado" });
-      }
-  
-      res.json(pedido);
-    } catch (error) {
-      res.status(500).json({ error: "Erro ao recuperar o pedido" });
+export const recuperarPedidoPorId = async (
+  req: Request,
+  res: Response,
+  prisma: PrismaClient
+) => {
+  try {
+    const { id } = req.params;
+    const pedido = await prisma.pedido.findUnique({
+      where: { id: Number(id) },
+      include: { produtos: true },
+    });
+
+    if (!pedido) {
+      return res.status(404).json({ error: "Pedido não encontrado" });
     }
-  };
+
+    res.json(pedido);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao recuperar o pedido" });
+  }
+};
 
 export const deletarPedido = async (
   req: Request,

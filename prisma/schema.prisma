@@ -17,15 +17,16 @@ model Produto {
     id          Int       @id @default(autoincrement()) // Usando Int para a chave primária
     nome        String
     preco       Float
+    imagem      String
     categoria   Categoria @relation(fields: [categoriaId], references: [id]) // Relacionamento com Categoria
-    categoriaId Int       // Referência para o ID da Categoria
+    categoriaId Int // Referência para o ID da Categoria
 
     pedidoProdutos PedidoProduto[] // Relação inversa com PedidoProduto
 }
 
 model Pedido {
-    id       Int            @id @default(autoincrement()) // Usando Int para a chave primária
-    mesaId   Int            // Relacionamento com a Mesa
+    id       Int             @id @default(autoincrement()) // Usando Int para a chave primária
+    mesaId   Int // Relacionamento com a Mesa
     status   String
     produtos PedidoProduto[] // Relação 1:N com PedidoProduto
 
@@ -33,17 +34,17 @@ model Pedido {
 }
 
 model PedidoProduto {
-    id         Int     @id @default(autoincrement()) // Usando Int para a chave primária
-    pedidoId   Int     // Relacionamento com Pedido
-    produtoId  Int     // Relacionamento com Produto
-    quantidade Int     // Quantidade do produto no pedido
+    id         Int @id @default(autoincrement()) // Usando Int para a chave primária
+    pedidoId   Int // Relacionamento com Pedido
+    produtoId  Int // Relacionamento com Produto
+    quantidade Int // Quantidade do produto no pedido
 
-    produto    Produto @relation(fields: [produtoId], references: [id]) // Relacionamento com Produto
-    pedido     Pedido  @relation(fields: [pedidoId], references: [id])   // Relacionamento com Pedido
+    produto Produto @relation(fields: [produtoId], references: [id]) // Relacionamento com Produto
+    pedido  Pedido  @relation(fields: [pedidoId], references: [id]) // Relacionamento com Pedido
 }
 
 model Mesa {
     id      Int      @id @default(autoincrement()) // Usando Int para a chave primária
-    numero  Int      // Número da mesa
+    numero  Int // Número da mesa
     pedidos Pedido[] // Relação 1:N com Pedido
 }
