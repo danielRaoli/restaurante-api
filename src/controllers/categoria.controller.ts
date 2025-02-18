@@ -7,10 +7,18 @@ export const criarCategoria = async (
   prisma: PrismaClient
 ) => {
   try {
-    const { nome } = req.body;
+    const { nome, subcategorias } = req.body;
     const novaCategoria = await prisma.categoria.create({
       data: {
         nome,
+        subcategorias: {
+          create: subcategorias?.map((sub: { nome: string }) => ({
+            nome: sub.nome,
+          })),
+        },
+      },
+      include: {
+        subcategorias: true,
       },
     });
     res.status(200).json(novaCategoria);
@@ -26,7 +34,7 @@ export const recuperarTodasCategorias = async (
 ) => {
   try {
     const categorias = await prisma.categoria.findMany({
-      include: { produtos: true },
+      include: { produtos: true, subcategorias: true },
     });
     res.status(200).json(categorias);
   } catch (error) {
@@ -43,7 +51,7 @@ export const recuperarCategoriaPorId = async (
     const { id } = req.params;
     const categoria = await prisma.categoria.findUnique({
       where: { id: Number(id) },
-      include: { produtos: true },
+      include: { produtos: true, subcategorias: true },
     });
     if (categoria) {
       res.status(200).json(categoria);
@@ -62,11 +70,20 @@ export const atualizarCategoria = async (
 ) => {
   try {
     const { id } = req.params;
-    const { nome } = req.body;
+    const { nome, subcategorias } = req.body;
     const categoriaAtualizada = await prisma.categoria.update({
       where: { id: Number(id) },
       data: {
         nome,
+        subcategorias: {
+          deleteMany: {},
+          create: subcategorias?.map((sub: { nome: string }) => ({
+            nome: sub.nome,
+          })),
+        },
+      },
+      include: {
+        subcategorias: true,
       },
     });
     res.status(200).json(categoriaAtualizada);

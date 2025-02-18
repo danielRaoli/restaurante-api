@@ -8,11 +8,7 @@ export const criarProduto = async (
   prisma: PrismaClient
 ) => {
   try {
-    console.log("Corpo da requisição:", req.body); // Log do corpo da requisição
-    console.log("Arquivo enviado:", req.file); // Log do arquivo enviado
-    const { nome, preco, categoriaId } = req.body;
-
-    // Validação dos campos obrigatórios
+    const { nome, preco, categoriaId, subcategoriaId } = req.body;
     if (!nome || !preco || !categoriaId) {
       return res
         .status(400)
@@ -41,6 +37,7 @@ export const criarProduto = async (
         preco: parseFloat(preco),
         imagem: imagemUrl,
         categoriaId: Number(categoriaId),
+        subcategoriaId: Number(subcategoriaId),
       },
     });
 
@@ -59,7 +56,12 @@ export const recuperarProdutos = async (
   prisma: PrismaClient
 ) => {
   try {
-    const produtos = await prisma.produto.findMany();
+    const produtos = await prisma.produto.findMany({
+      include: {
+        categoria: true,
+        subcategoria: true,
+      },
+    });
     res.status(200).json(produtos);
   } catch (error) {
     res.status(500).json({ error: "Erro ao recuperar os produtos" });
@@ -94,7 +96,7 @@ export const atualizarProduto = async (
 ) => {
   try {
     const { id } = req.params;
-    const { nome, preco, categoriaId, imagem } = req.body;
+    const { nome, preco, imagem, categoriaId, subcategoriaId } = req.body;
 
     // Verifica se o produto existe
     const produtoExistente = await prisma.produto.findUnique({
@@ -124,10 +126,13 @@ export const atualizarProduto = async (
       data: {
         nome: nome || produtoExistente.nome,
         preco: preco ? parseFloat(preco) : produtoExistente.preco,
+        imagem: imagemUrl,
         categoriaId: categoriaId
           ? Number(categoriaId)
           : produtoExistente.categoriaId,
-        imagem: imagemUrl,
+        subcategoriaId: subcategoriaId
+          ? Number(subcategoriaId)
+          : produtoExistente.subcategoriaId,
       },
     });
 
