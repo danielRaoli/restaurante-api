@@ -38,7 +38,7 @@ export const recuperarTodasSubcategorias = async (
 ) => {
   try {
     const subcategorias = await prisma.subCategoria.findMany({
-      include: { categoria: true },
+      include: { categoria: true, produtos: true },
     });
     res.status(200).json(subcategorias);
   } catch (error) {
@@ -55,7 +55,7 @@ export const recuperarSubcategoriaPorId = async (
     const { id } = req.params;
     const subcategoria = await prisma.subCategoria.findUnique({
       where: { id: Number(id) },
-      include: { categoria: true },
+      include: { categoria: true, produtos: true },
     });
 
     if (!subcategoria) {

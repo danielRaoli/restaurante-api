@@ -36,6 +36,7 @@ export const criarProduto = async (
         nome,
         preco: parseFloat(preco),
         imagem: imagemUrl,
+        descricao: req.body.descricao,
         categoriaId: Number(categoriaId),
         subcategoriaId: Number(subcategoriaId),
       },
@@ -96,7 +97,8 @@ export const atualizarProduto = async (
 ) => {
   try {
     const { id } = req.params;
-    const { nome, preco, imagem, categoriaId, subcategoriaId } = req.body;
+    const { nome, preco, imagem, descricao, categoriaId, subcategoriaId } =
+      req.body;
 
     // Verifica se o produto existe
     const produtoExistente = await prisma.produto.findUnique({
@@ -127,6 +129,7 @@ export const atualizarProduto = async (
         nome: nome || produtoExistente.nome,
         preco: preco ? parseFloat(preco) : produtoExistente.preco,
         imagem: imagemUrl,
+        descricao: descricao || produtoExistente.descricao,
         categoriaId: categoriaId
           ? Number(categoriaId)
           : produtoExistente.categoriaId,
