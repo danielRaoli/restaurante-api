@@ -7,11 +7,11 @@ export const criarPedido = async (
   prisma: PrismaClient
 ) => {
   try {
-    const { mesaId, produtos } = req.body;
+    const { mesaId, status, produtos } = req.body;
     const pedido = await prisma.pedido.create({
       data: {
         mesaId,
-        status: "pendente",
+        status: status,
         produtos: {
           create: produtos.map(
             (p: { produtoId: string; quantidade: number }) => ({
