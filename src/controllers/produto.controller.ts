@@ -38,7 +38,7 @@ export const criarProduto = async (
         imagem: imagemUrl,
         descricao: req.body.descricao,
         categoriaId: Number(categoriaId),
-        subcategoriaId: Number(subcategoriaId),
+        subcategoriaId: Number(subcategoriaId) || null,
       },
     });
 
