@@ -12,12 +12,14 @@ import subCategoriaRoutes from "./routes/subcategoria.route";
 import cors from "cors";
 
 const app = express();
-const server = createServer(app); // Criamos um servidor HTTP a partir do Express
+const server = createServer(app); 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Defina corretamente a origem permitida
-  },
+    origin: "https://restaurante-api-wv3i.onrender.com",
+    methods: ["GET", "POST"]
+  }
 });
+
 
 const prisma = new PrismaClient();
 
