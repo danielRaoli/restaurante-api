@@ -4,7 +4,8 @@ import { Request, Response } from "express";
 export const criarPedido = async (
   req: Request,
   res: Response,
-  prisma: PrismaClient
+  prisma: PrismaClient,
+  io: any
 ) => {
   try {
     const { mesaId, status, produtos } = req.body;
@@ -23,6 +24,8 @@ export const criarPedido = async (
       },
       include: { produtos: true },
     });
+
+    io.emit("pedidoCriado", pedido);
     res.status(201).json(pedido);
   } catch (error) {
     res.status(500).json({ error: "Erro ao criar o pedido" });

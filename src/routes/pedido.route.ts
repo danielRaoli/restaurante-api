@@ -8,11 +8,11 @@ import {
 } from "../controllers/pedido.controller";
 import { PrismaClient } from "@prisma/client";
 
-const pedidoRoutes = (prisma: PrismaClient) => {
+const pedidoRoutes = (prisma: PrismaClient, io: any) => {
   const router = Router();
 
   // Rota para criar um novo pedido
-  router.post("/", (req, res) => criarPedido(req, res, prisma));
+  router.post("/", (req, res) => criarPedido(req, res, prisma, io));
 
   // Rota para atualizar um pedido existente
   router.put("/:id", (req, res) => atualizarPedido(req, res, prisma));
