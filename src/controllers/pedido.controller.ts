@@ -22,7 +22,13 @@ export const criarPedido = async (
           ),
         },
       },
-      include: { produtos: true },
+      include: {
+        produtos: {
+          include: {
+            produto: true,
+          },
+        },
+      },
     });
 
     io.emit("pedidoCriado", pedido);
@@ -72,7 +78,11 @@ export const recuperarPedidos = async (
   try {
     const pedidos = await prisma.pedido.findMany({
       include: {
-        produtos: true,
+        produtos: {
+          include: {
+            produto: true,
+          },
+        },
       },
     });
     res.status(200).json(pedidos);
@@ -90,7 +100,13 @@ export const recuperarPedidoPorId = async (
     const { id } = req.params;
     const pedido = await prisma.pedido.findUnique({
       where: { id: Number(id) },
-      include: { produtos: true },
+      include: {
+        produtos: {
+          include: {
+            produto: true,
+          },
+        },
+      },
     });
 
     if (!pedido) {
