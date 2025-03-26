@@ -26,7 +26,17 @@ export const recuperarMesas = async (
 ) => {
   try {
     const mesas = await prisma.mesa.findMany({
-      include: { pedidos: true }, // Inclui os pedidos associados à mesa
+      include: {
+        pedidos: {
+          include: {
+            produtos: {
+              include: {
+                produto: true,
+              },
+            },
+          },
+        },
+      },
     });
     res.json(mesas);
   } catch (error) {
@@ -43,7 +53,17 @@ export const recuperarMesaPorId = async (
     const { id } = req.params;
     const mesa = await prisma.mesa.findUnique({
       where: { id: parseInt(id) },
-      include: { pedidos: true },
+      include: {
+        pedidos: {
+          include: {
+            produtos: {
+              include: {
+                produto: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (mesa) {
