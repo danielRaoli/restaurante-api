@@ -12,14 +12,13 @@ import subCategoriaRoutes from "./routes/subcategoria.route";
 import cors from "cors";
 
 const app = express();
-const server = createServer(app); 
+const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://restaurante-api-wv3i.onrender.com",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
-
 
 const prisma = new PrismaClient();
 
@@ -42,6 +41,11 @@ app.use("/subcategorias", subCategoriaRoutes());
 // WebSockets - Evento de conexão
 io.on("connection", (socket) => {
   console.log("Novo cliente conectado:", socket.id);
+
+  socket.on("chamarGarcom", (mesa) => {
+    console.log("Chamando garcom na mesa: ", mesa);
+    io.emit("garcomChamado", mesa);
+  });
 
   socket.on("disconnect", () => {
     console.log("Cliente desconectado:", socket.id);
