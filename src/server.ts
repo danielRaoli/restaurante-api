@@ -20,10 +20,11 @@ const allowedOrigins = [
 ];
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: ["http://localhost:3000"], 
     methods: ["GET", "POST"],
-    credentials: true,
+    credentials: true
   },
+  transports: ['websocket', 'polling'], 
 });
 
 const prisma = new PrismaClient();
