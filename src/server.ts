@@ -13,10 +13,16 @@ import cors from "cors";
 
 const app = express();
 const server = createServer(app);
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://restaurante-api-wv3i.onrender.com",
+];
 const io = new Server(server, {
   cors: {
-    origin: "https://restaurante-api-wv3i.onrender.com",
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -24,11 +30,11 @@ const prisma = new PrismaClient();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
-
-app.use(cors());
 
 app.use(express.json());
 
