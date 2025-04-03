@@ -25,10 +25,14 @@ export const listarContas = async (req: Request, res: Response) => {
       include: {
         pedidos: {
           include: {
-            produtos: true,
+            produtos: {
+              include: {
+                produto: true,
+              },
+            },
           },
         },
-      }, // Inclui os pedidos da conta
+      },
     });
 
     return res.json(contas);
@@ -47,7 +51,11 @@ export const buscarContaPorId = async (req: Request, res: Response) => {
       include: {
         pedidos: {
           include: {
-            produtos: true,
+            produtos: {
+              include: {
+                produto: true,
+              },
+            },
           },
         },
       },
