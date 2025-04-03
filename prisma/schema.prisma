@@ -1,63 +1,72 @@
 generator client {
-    provider = "prisma-client-js"
-    binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL") // A URL de conexão com o banco PostgreSQL
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // A URL de conexão com o banco PostgreSQL
 }
 
 model Categoria {
-    id            Int            @id @default(autoincrement()) // Usando Int para a chave primária
-    nome          String
-    produtos      Produto[] // Relação 1:N com Produto
-    subcategorias SubCategoria[]
+  id            Int            @id @default(autoincrement()) // Usando Int para a chave primária
+  nome          String
+  produtos      Produto[] // Relação 1:N com Produto
+  subcategorias SubCategoria[]
 }
 
 model SubCategoria {
-    id          Int       @id @default(autoincrement())
-    nome        String
-    categoria   Categoria @relation(fields: [categoriaId], references: [id])
-    categoriaId Int
-    produtos    Produto[]
+  id          Int       @id @default(autoincrement())
+  nome        String
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  produtos    Produto[]
 }
 
 model Produto {
-    id             Int           @id @default(autoincrement()) // Usando Int para a chave primária
-    nome           String
-    preco          Float
-    imagem         String
-    descricao      String?
-    categoria      Categoria     @relation(fields: [categoriaId], references: [id]) // Relacionamento com Categoria
-    categoriaId    Int // Referência para o ID da Categoria
-    subcategoria   SubCategoria? @relation(fields: [subcategoriaId], references: [id])
-    subcategoriaId Int?
+  id             Int           @id @default(autoincrement()) // Usando Int para a chave primária
+  nome           String
+  preco          Float
+  imagem         String
+  descricao      String?
+  categoria      Categoria     @relation(fields: [categoriaId], references: [id]) // Relacionamento com Categoria
+  categoriaId    Int // Referência para o ID da Categoria
+  subcategoria   SubCategoria? @relation(fields: [subcategoriaId], references: [id])
+  subcategoriaId Int?
 
-    pedidoProdutos PedidoProduto[] // Relação inversa com PedidoProduto
+  pedidoProdutos PedidoProduto[] // Relação inversa com PedidoProduto
 }
 
 model Pedido {
-    id       Int             @id @default(autoincrement()) // Usando Int para a chave primária
-    mesaId   Int // Relacionamento com a Mesa
-    status   String
-    produtos PedidoProduto[] // Relação 1:N com PedidoProduto
+  id       Int             @id @default(autoincrement()) // Usando Int para a chave primária
+  mesaId   Int // Relacionamento com a Mesa
+  status   String
+  contaId  Int?
+  produtos PedidoProduto[] // Relação 1:N com PedidoProduto
 
-    mesa Mesa @relation(fields: [mesaId], references: [id]) // Relacionamento com Mesa
+  mesa  Mesa   @relation(fields: [mesaId], references: [id]) // Relacionamento com Mesa
+  conta Conta? @relation(fields: [contaId], references: [id])
 }
 
 model PedidoProduto {
-    id         Int @id @default(autoincrement()) // Usando Int para a chave primária
-    pedidoId   Int // Relacionamento com Pedido
-    produtoId  Int // Relacionamento com Produto
-    quantidade Int // Quantidade do produto no pedido
+  id         Int @id @default(autoincrement()) // Usando Int para a chave primária
+  pedidoId   Int // Relacionamento com Pedido
+  produtoId  Int // Relacionamento com Produto
+  quantidade Int // Quantidade do produto no pedido
 
-    produto Produto @relation(fields: [produtoId], references: [id]) // Relacionamento com Produto
-    pedido  Pedido  @relation(fields: [pedidoId], references: [id]) // Relacionamento com Pedido
+  produto Produto @relation(fields: [produtoId], references: [id]) // Relacionamento com Produto
+  pedido  Pedido  @relation(fields: [pedidoId], references: [id]) // Relacionamento com Pedido
 }
 
 model Mesa {
-    id      Int      @id @default(autoincrement()) // Usando Int para a chave primária
-    numero  Int // Número da mesa
-    pedidos Pedido[] // Relação 1:N com Pedido
+  id      Int      @id @default(autoincrement()) // Usando Int para a chave primária
+  numero  Int // Número da mesa
+  pedidos Pedido[] // Relação 1:N com Pedido
+}
+
+model Conta {
+  id          Int      @id @default(autoincrement()) // Usando Int para a chave primária
+  donoConta   String
+  statusConta String
+  pedidos     Pedido[]
 }

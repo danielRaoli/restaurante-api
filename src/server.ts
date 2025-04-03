@@ -10,6 +10,7 @@ import categoriaRoutes from "./routes/categoria.route";
 import subCategoriaRoutes from "./routes/subcategoria.route";
 
 import cors from "cors";
+import contaRoutes from "./routes/conta.route";
 
 const app = express();
 const server = createServer(app);
@@ -20,11 +21,11 @@ const allowedOrigins = [
 ];
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"], 
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
-    credentials: true
+    credentials: true,
   },
-  transports: ['websocket', 'polling'], 
+  transports: ["websocket", "polling"],
 });
 
 const prisma = new PrismaClient();
@@ -44,6 +45,7 @@ app.use("/pedidos", pedidoRoutes(prisma, io));
 app.use("/produtos", produtoRoutes(prisma));
 app.use("/categorias", categoriaRoutes(prisma));
 app.use("/subcategorias", subCategoriaRoutes());
+app.use("/contas", contaRoutes());
 
 // WebSockets - Evento de conexão
 io.on("connection", (socket) => {
