@@ -8,11 +8,12 @@ export const criarPedido = async (
   io: any
 ) => {
   try {
-    const { mesaId, status, produtos } = req.body;
+    const { mesaId, status, contaId, produtos } = req.body;
     const pedido = await prisma.pedido.create({
       data: {
         mesaId,
         status: status,
+        contaId,
         produtos: {
           create: produtos.map(
             (p: { produtoId: string; quantidade: number }) => ({
@@ -44,7 +45,7 @@ export const atualizarPedido = async (
   prisma: PrismaClient
 ) => {
   const { id } = req.params;
-  const { mesaId, status, produtos } = req.body;
+  const { mesaId, status, contaId, produtos } = req.body;
 
   try {
     const pedido = await prisma.pedido.update({
@@ -52,6 +53,7 @@ export const atualizarPedido = async (
       data: {
         mesaId,
         status,
+        contaId,
         produtos: {
           deleteMany: {},
           create: produtos.map(
