@@ -6,10 +6,17 @@ const prisma = new PrismaClient();
 // Criar uma nova conta
 export const criarConta = async (req: Request, res: Response) => {
   try {
-    const { donoConta, statusConta = "Aberta" } = req.body;
+    const { donoConta, statusConta = "Aberta", pedidos } = req.body;
 
     const novaConta = await prisma.conta.create({
-      data: { donoConta, statusConta },
+      data: {
+        donoConta,
+        statusConta,
+        pedidos: pedidos ? { create: pedidos } : undefined, 
+      },
+      include: {
+        pedidos: true,
+      },
     });
 
     return res.status(201).json(novaConta);
