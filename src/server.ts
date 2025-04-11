@@ -56,9 +56,9 @@ io.on("connection", (socket) => {
     io.emit("garcomChamado", mesa);
   });
 
-  socket.on("solicitandoConta", (mesa) => {
-    console.log("Solicitando conta na mesa: ", mesa);
-    io.emit("contaSolicitada", mesa);
+  socket.on("solicitandoConta", (mesa, conta) => {
+    console.log("Solicitando conta na mesa: " + mesa.numero + "\nConta: " + conta.id);
+    io.emit("contaSolicitada", mesa, conta);
   });
 
   socket.on("disconnect", () => {
