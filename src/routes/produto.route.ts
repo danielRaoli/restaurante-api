@@ -9,6 +9,7 @@ import {
 } from "../controllers/produto.controller";
 import { upload } from "../config/cloudinary";
 import express, { Request, Response, NextFunction } from "express";
+import { authenticateToken } from "../middlewares/auth";
 
 // Extenda o tipo Request para reconhecer a propriedade file
 export interface RequestWithFile extends Request {
@@ -20,7 +21,7 @@ const produtoRoutes = (prisma: PrismaClient) => {
 
   // Rota para criar um novo produto
   router.post(
-    "/",
+    "/", authenticateToken,
     upload.single("imagem"),
     async (req: RequestWithFile, res: Response, next: NextFunction) => {
       try {
@@ -35,6 +36,7 @@ const produtoRoutes = (prisma: PrismaClient) => {
   // Rota para atualizar um produto existente
   router.put(
     "/:id",
+    authenticateToken,
     upload.single("imagem"),
     async (req: RequestWithFile, res: Response, next) => {
       try {
@@ -46,7 +48,7 @@ const produtoRoutes = (prisma: PrismaClient) => {
   );
 
   // Rota para recuperar todos os produtos
-  router.get("/", (req, res) => recuperarProdutos(req, res, prisma));
+  router.get("/",(req, res) => recuperarProdutos(req, res, prisma));
 
   // Rota para recuperar um produto por ID
   router.get("/:id", async (req, res) => {
@@ -54,7 +56,7 @@ const produtoRoutes = (prisma: PrismaClient) => {
   });
 
   // Rota para deletar um produto
-  router.delete("/:id", (req, res) => deletarProduto(req, res, prisma));
+  router.delete("/:id", authenticateToken,(req, res) => deletarProduto(req, res, prisma));
 
   return router;
 };
