@@ -6,7 +6,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   const token = authHeader?.split(' ')[1];
 
   if (!token) {
-    res.status(401).json({ message: 'Token não fornecido' });
+    res.status(401).json({ message: 'Token não fornecido!' });
     return;
   }
 
