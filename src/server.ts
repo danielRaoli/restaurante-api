@@ -8,6 +8,7 @@ import pedidoRoutes from "./routes/pedido.route";
 import produtoRoutes from "./routes/produto.route";
 import categoriaRoutes from "./routes/categoria.route";
 import subCategoriaRoutes from "./routes/subcategoria.route";
+import authRoutes from "./routes/auth.route";
 
 import cors from "cors";
 import contaRoutes from "./routes/conta.route";
@@ -46,6 +47,7 @@ app.use("/produtos", produtoRoutes(prisma));
 app.use("/categorias", categoriaRoutes(prisma));
 app.use("/subcategorias", subCategoriaRoutes());
 app.use("/contas", contaRoutes());
+app.use("/login", authRoutes());
 
 // WebSockets - Evento de conexão
 io.on("connection", (socket) => {
@@ -57,7 +59,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("solicitandoConta", (mesa, conta) => {
-    console.log("Solicitando conta na mesa: " + mesa.numero + "\nConta: " + conta.id);
+    console.log(
+      "Solicitando conta na mesa: " + mesa.numero + "\nConta: " + conta.id
+    );
     io.emit("contaSolicitada", mesa, conta);
   });
 
