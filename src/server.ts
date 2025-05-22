@@ -58,11 +58,16 @@ io.on("connection", (socket) => {
     io.emit("garcomChamado", mesa);
   });
 
-  socket.on("solicitandoConta", (mesa, conta) => {
+  socket.on("solicitandoConta", ({ numeroMesa, donoConta, totalConta }) => {
     console.log(
-      "Solicitando conta na mesa: " + mesa.numero + "\nConta: " + conta.id
+      "Solicitando conta na mesa: " +
+        numeroMesa +
+        "\nDono da conta: " +
+        donoConta
     );
-    io.emit("contaSolicitada", mesa, conta);
+    console.log("Total da conta: R$" + totalConta);
+
+    io.emit("contaSolicitada", { numeroMesa, donoConta, totalConta });
   });
 
   socket.on("disconnect", () => {
