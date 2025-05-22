@@ -6,7 +6,6 @@ import {
   deletarConta,
   listarContas,
 } from "../controllers/conta.controller";
-import { authenticateToken } from "../middlewares/auth";
 
 const contaRoutes = () => {
   const router = Router();
@@ -17,12 +16,12 @@ const contaRoutes = () => {
   });
 
   // Rota para atualizar um pedido existente
-  router.put("/:id", authenticateToken,async (req, res) => {
+  router.put("/:id", async (req, res) => {
     await atualizarConta(req, res);
   });
 
   // Rota para recuperar todos os pedidos
-  router.get("/", authenticateToken,async (req, res) => {
+  router.get("/", async (req, res) => {
     await listarContas(req, res);
   });
 
@@ -32,7 +31,7 @@ const contaRoutes = () => {
   });
 
   // Rota para deletar um pedido
-  router.delete("/:id", authenticateToken ,async (req, res) => {
+  router.delete("/:id", async (req, res) => {
     await deletarConta(req, res);
   });
 
