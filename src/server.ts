@@ -70,6 +70,11 @@ io.on("connection", (socket) => {
     io.emit("contaSolicitada", { numeroMesa, donoConta, totalConta });
   });
 
+   socket.on('pedidoRealizado', (data: { contaId: number }) => {
+    // Notifica todos os clientes interessados nesta conta
+    io.emit('atualizarPedidos', { contaId: data.contaId });
+  });
+
   socket.on("disconnect", () => {
     console.log("Cliente desconectado:", socket.id);
   });
