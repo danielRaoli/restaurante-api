@@ -15,7 +15,7 @@ export const login = (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Usuário ou senha inválidos' });
   }
 
-  const token = jwt.sign("Autenticado", secretKey!, { expiresIn: '8h' });
+  const token = jwt.sign({message: "autenticado"}, secretKey!, { expiresIn: 60 });
   res.json({ token });
 };
 
