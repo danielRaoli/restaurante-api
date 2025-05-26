@@ -19,6 +19,7 @@ const server = createServer(app);
 const allowedOrigins = [
   "http://localhost:3000",
   "https://restaurante-api-wv3i.onrender.com",
+  "https://menu-eta-two.vercel.app/"
 ];
 const io = new Server(server, {
   cors: {
