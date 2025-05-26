@@ -19,11 +19,11 @@ const server = createServer(app);
 const allowedOrigins = [
   "http://localhost:3000",
   "https://restaurante-api-wv3i.onrender.com",
-  "https://menu-eta-two.vercel.app/"
+  "https://menu-eta-two.vercel.app",
 ];
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://menu-eta-two.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -71,8 +71,8 @@ io.on("connection", (socket) => {
     io.emit("contaSolicitada", { numeroMesa, donoConta, totalConta });
   });
 
-   socket.on('pedidoRealizado', (data: { contaId: number }) => {
-    io.emit('atualizarPedidos', { contaId: data.contaId });
+  socket.on("pedidoRealizado", (data: { contaId: number }) => {
+    io.emit("atualizarPedidos", { contaId: data.contaId });
   });
 
   socket.on("disconnect", () => {
