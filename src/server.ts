@@ -71,7 +71,6 @@ io.on("connection", (socket) => {
   });
 
    socket.on('pedidoRealizado', (data: { contaId: number }) => {
-    // Notifica todos os clientes interessados nesta conta
     io.emit('atualizarPedidos', { contaId: data.contaId });
   });
 

@@ -32,7 +32,7 @@ export const criarPedido = async (
       },
     });
 
-    io.emit("pedidoCriado", pedido);
+    io.emit("pedidoRealizado", pedido);
     res.status(201).json(pedido);
   } catch (error) {
     res.status(500).json({ error: "Erro ao criar o pedido" });
