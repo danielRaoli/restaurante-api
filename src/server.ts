@@ -18,12 +18,12 @@ const server = createServer(app);
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://restaurante-api-wv3i.onrender.com",
-  "https://menu-eta-two.vercel.app",
+  "http://localhost:3001",
+
 ];
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://menu-eta-two.vercel.app"],
+    origin: ["http://localhost:3000","http://localhost:3001"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -59,20 +59,25 @@ io.on("connection", (socket) => {
     io.emit("garcomChamado", mesa);
   });
 
-  socket.on("solicitandoConta", ({ numeroMesa, donoConta, totalConta }) => {
+  socket.on("solicitandoConta", ({ numeroMesa, idConta,donoConta }) => {
     console.log(
       "Solicitando conta na mesa: " +
         numeroMesa +
         "\nDono da conta: " +
         donoConta
     );
-    console.log("Total da conta: R$" + totalConta);
+    
 
-    io.emit("contaSolicitada", { numeroMesa, donoConta, totalConta });
+    io.emit("contaSolicitada", { numeroMesa, idConta,donoConta });
   });
 
   socket.on("pedidoRealizado", (data: { contaId: number }) => {
     io.emit("atualizarPedidos", { contaId: data.contaId });
+  });
+
+
+  socket.on("fecharConta", (data: { contaId: number }) => {
+    io.emit("contaFechada", { contaId: data.contaId });
   });
 
   socket.on("disconnect", () => {
@@ -80,7 +85,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT =  5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

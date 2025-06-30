@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // A URL de conexão com o banco PostgreSQL
+  url      = "postgresql://neondb_owner:npg_JY3dIZ0aCVAh@ep-quiet-river-a8stk4n8-pooler.eastus2.azure.neon.tech/neondb?sslmode=require" // A URL de conexão com o banco PostgreSQL
 }
 
 model Categoria {

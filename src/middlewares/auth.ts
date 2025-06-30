@@ -10,7 +10,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  jwt.verify(token, process.env.JWT_SECRET!, (err) => {
+  jwt.verify(token, "UDIUS@!$%!@%$#@#IDSIUADSA*&D(*SA&(D*AS&(D*&(*&E(Q*&E(*&(*YE(*#EY(*HIUWHQIWUHEWQ(WQ*UE(*Y!@!", (err) => {
     if (err) {
       res.status(403).json({ message: 'Token inválido' });
       return;
