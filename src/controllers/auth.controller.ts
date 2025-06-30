@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-const secretKey = process.env.SECRET_KEY;
+const secretKey = "UDIUS@!$%!@%$#@#IDSIUADSA*&D(*SA&(D*AS&(D*&(*&E(Q*&E(*&(*YE(*#EY(*HIUWHQIWUHEWQ(WQ*UE(*Y!@!";
 
 const mockUser = {
   username: 'admin',
@@ -15,7 +15,7 @@ export const login = (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Usuário ou senha inválidos' });
   }
 
-  const token = jwt.sign({message: "autenticado"}, secretKey!, { expiresIn: 60 });
+  const token = jwt.sign({message: "autenticado"}, secretKey, { expiresIn: 60 });
   res.json({ token });
 };
 
